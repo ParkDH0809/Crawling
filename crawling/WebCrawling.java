@@ -1,30 +1,78 @@
 package crawling;
 
+import java.io.IOException;
+import java.util.*;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;
 
 public class WebCrawling {
-    String naverComputerNewsURL;
-    
+
+    String naverNewsCategoryURL;
+    NewsPage[] newsPages;
+
     WebCrawling(String s) {
-        naverComputerNewsURL = "https://news.naver.com/main/list.naver?mode=LS2D&mid=shm&sid1=105&sid2=283";
-        crawlingComputerPage();
+        naverNewsCategoryURL = s;
+        getNewsPageURL();
     }
 
-    void crawlingComputerPage() {
+    void getNewsPageURL() {
         Document doc;
-        try {
-            doc = Jsoup.connect(naverComputerNewsURL).get();
+        Elements links;
 
-            Elements links = doc.select("dl > dt.photo > a");
-            int n = 0;
+        try {
+
+            doc = Jsoup.connect(naverNewsCategoryURL).get();
+            links = doc.select("dl > dt.photo > a");
+
+                        
+            int i = 0;
+            newsPages = new NewsPage[links.size()];
             for(Element link : links) {
-                System.out.println(++n + " " + link.attr("href"));
+                newsPages[i++] = new NewsPage(link.attr("href"));
             }
             
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+}
+
+class NewsPage {
+    private Document doc;
+    private String URL;
+    private String title;
+    private String journalist;
+
+    //단어 횟수를 담을 HashMap
+    HashMap<String, Integer> map;
+
+    NewsPage(String URL) {
+        this.URL = URL;
+
+        try {
+            doc = Jsoup.connect(URL).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        title = doc.title();
+        journalist = doc.select("em.media_end_head_journalist_name").text();
+    }
+
+    public Document getDoc() {
+        return this.doc;
+    }
+
+    public String getURL() {
+        return this.URL;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public String getJournalist() {
+        return this.journalist;
     }
 }
