@@ -67,10 +67,19 @@ class NewsPage {
 
     public void getWords() {
         HashSet<String> stopWord = StopWord.getHash();
+        
         Iterator<String> it = stopWord.iterator();
+        while(it.hasNext()) {
+            content = content.replaceAll(it.next(), "");
 
-        while(it.hasNext())
-            System.out.println(it.next());
+        }
+
+        //불용어 확인
+        // Iterator<String> it = stopWord.iterator();
+        // while(it.hasNext())
+        //     System.out.println(it.next());
+
+        System.out.println(content);
     }
 
     public Document getDoc() {

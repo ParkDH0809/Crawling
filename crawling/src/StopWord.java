@@ -9,7 +9,7 @@ public class StopWord {
     StopWord() {
         InputStreamReader isr;
         try {
-            isr = new InputStreamReader(new FileInputStream("crawling/StopWord.txt"), "UTF-8");
+            isr = new InputStreamReader(new FileInputStream("crawling/testStopWord.txt"), "UTF-8");
             BufferedReader br = new BufferedReader(isr);
 
             String word;
@@ -26,8 +26,6 @@ public class StopWord {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-
         
     }
 
