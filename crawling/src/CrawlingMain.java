@@ -1,4 +1,4 @@
-package crawling;
+package crawling.src;
 
 
 class crawlingMain {
