@@ -47,7 +47,7 @@ class NewsPage {
     private String journalist;
     private String content;
     //단어 횟수를 담을 HashMap
-    HashMap<String, Integer> map;
+    static HashMap<String, Integer> map = new HashMap<>();
 
     NewsPage(String URL) {
         this.URL = URL;
@@ -71,15 +71,19 @@ class NewsPage {
         Iterator<String> it = stopWord.iterator();
         while(it.hasNext()) {
             content = content.replaceAll(it.next(), "");
-
         }
 
+        for(String s : content.split(" ")) {
+            map.put(s, map.getOrDefault(s, 0) + 1);
+        }
+
+        for(String s : map.keySet()) {
+            System.out.println(s + " " + map.get(s));
+        }
         //불용어 확인
         // Iterator<String> it = stopWord.iterator();
         // while(it.hasNext())
         //     System.out.println(it.next());
-
-        System.out.println(content);
     }
 
     public Document getDoc() {
