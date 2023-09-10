@@ -15,6 +15,7 @@ public class WebCrawling {
     WebCrawling(String s) {
         naverNewsCategoryURL = s;
         getNewsPageURL();
+        NewsPage.printWords();
     }
 
     void getNewsPageURL() {
@@ -41,13 +42,15 @@ public class WebCrawling {
 }
 
 class NewsPage {
+
+    //단어 횟수를 담을 HashMap
+    static HashMap<String, Integer> map = new HashMap<>();
+
     private Document doc;
     private String URL;
     private String title;
     private String journalist;
     private String content;
-    //단어 횟수를 담을 HashMap
-    static HashMap<String, Integer> map = new HashMap<>();
 
     NewsPage(String URL) {
         this.URL = URL;
@@ -63,6 +66,7 @@ class NewsPage {
         content = doc.select("article#dic_area").text();
 
         getWords();
+        printNewsInfo();
     }
 
     public void getWords() {
@@ -77,28 +81,24 @@ class NewsPage {
             map.put(s, map.getOrDefault(s, 0) + 1);
         }
 
-        for(String s : map.keySet()) {
-            System.out.println(s + " " + map.get(s));
-        }
         //불용어 확인
         // Iterator<String> it = stopWord.iterator();
         // while(it.hasNext())
         //     System.out.println(it.next());
     }
 
-    public Document getDoc() {
-        return this.doc;
+    static void printWords() {
+        System.out.println("많이 사용된 단어: ");
+        for(String s : map.keySet()) {
+            if(map.get(s) >= 10)
+                System.out.print(s + ": " + map.get(s) + "회, ");
+        }
     }
 
-    public String getURL() {
-        return this.URL;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public String getJournalist() {
-        return this.journalist;
+    void printNewsInfo() {
+        System.out.println("Title: " + title);
+        System.out.println("Journalist: " + journalist);
+        System.out.println("URL : " + URL);
+        System.out.println("*****************************");
     }
 }
